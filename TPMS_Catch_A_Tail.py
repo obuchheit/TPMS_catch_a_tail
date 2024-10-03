@@ -10,7 +10,9 @@ class ID:
 
   def __init__(self):
     with open('cat.json', 'r') as infile:
-      pass
+      self._rtl_data = json.load(infile)
+
+  
 
 
 
