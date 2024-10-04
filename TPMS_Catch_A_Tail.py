@@ -10,13 +10,16 @@ data = {}
 sln = 0
 ln = 0
 
+'''Adds any new ID in the data file'''
 with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
 
   for line in csv_reader[sln:]:
     ln += 1
     
-    data[line['id']] = [line['time'], line['lat'], line['lon'], line['model'], line['rssi'], line['code']] 
+    if line['id'] not in data:
+
+      data[line['id']] = [line['time'], line['lat'], line['lon'], line['model'], line['rssi'], line['code']] 
 
 
 
