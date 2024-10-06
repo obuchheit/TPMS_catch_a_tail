@@ -17,8 +17,21 @@ class ID:
 class UID:
   '''Makes a new unique id with a list of permanent items and dict of changable items linked to a Tire Pressure Sensor Monitor.'''
 
-  def __init__(self, time, loc, model, rssi, code):
+
+  def __init__(self):
     pass
+
+class TargetDeck:
+  pass
+
+class IgnoreList:
+  pass
+
+class CSVOutput:
+  pass
+
+class KMLOutput:
+  pass
     
 
 
