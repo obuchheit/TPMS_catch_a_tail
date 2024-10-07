@@ -17,12 +17,12 @@ class ID:
 class UID(ID):
   '''Makes a new unique id with a list of permanent items and dict of changable items linked to a Tire Pressure Sensor Monitor.'''
 
-#Figure out if you can inherit ID init.
   def __init__(self):
     pass
 
-  def set_UID(self):
+  def set_var_objs(self): 
     pass
+
 
 class TargetDeck:
   pass
