@@ -4,9 +4,9 @@ import TPMS_Catch_A_Tail as cat
 class ID:
   '''Creates a dictionary of all collected instances of a TPMS Tx.'''
   
-  def __init__(self, time, loc, model, rssi, code, count):
+  def __init__(self, time, grid_count, model, rssi, code):
     self.time = time
-    self.loc = loc
+    self.grid_count = grid_count
     self.model = model
     self.rssi = rssi 
     self.code = code
@@ -14,7 +14,7 @@ class ID:
   def get_time(self):
     return self.time
   
-class UID:
+class UID(ID):
   '''Makes a new unique id with a list of permanent items and dict of changable items linked to a Tire Pressure Sensor Monitor.'''
 
 #Figure out if you can inherit ID init.

@@ -15,20 +15,25 @@ with open('test.csv', 'r') as csv_file:
 
   for line in csv_reader[sln:]:
     ln += 1
+    count = 1
 
     id = line['id']
     ti = line['time']
-    loc = line['lat'], line['lon']
+
+    grid_count = grid_count[count] = line['lat'], line['lon']
+
     model = line['model']
     rssi = line['rssi']
     code = line['code']
 
     if id not in tclass.UID:
-      count = 1
 
-      id = tclass.UID(ti, loc, model, rssi, code, count)
+      id = tclass.UID(ti, grid_count, model, rssi, code, count)
 
-    id = tclass.ID(ti, loc, model, rssi, code, count)
+    if id in tclass.UID:
+      tclass.UID.set_UID()
+
+    id = tclass.ID(ti, grid_count, model, rssi, code, count)
 
 
 sln = ln
