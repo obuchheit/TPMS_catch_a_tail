@@ -14,7 +14,6 @@ with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
 
   for line in csv_reader[sln:]:
-
     ln += 1
 
     id = line['id']
@@ -24,7 +23,13 @@ with open('test.csv', 'r') as csv_file:
     rssi = line['rssi']
     code = line['code']
 
-    id = tclass.ID(ti, loc, model, rssi, code)
+    if id not in tclass.UID:
+      count = 1
+
+      id = tclass.UID(ti, loc, model, rssi, code, count)
+
+    id = tclass.ID(ti, loc, model, rssi, code, count)
+
 
 sln = ln
 ln = 0
