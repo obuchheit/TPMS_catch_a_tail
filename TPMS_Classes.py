@@ -9,7 +9,6 @@ class UID:
     self.code = code
     self.count = count
     
-    print(UID.get_var_objs(self))
     
   def set_var_objs(self, ins): 
     self.count += 1

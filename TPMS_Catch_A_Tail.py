@@ -25,18 +25,17 @@ with open('test.csv', 'r') as csv_file:
         
     
     #Adds a new ID to the UID class
-    if isinstance(id, UID) == False:
+    if isinstance(id, UID):
+      count = id.count + 1
+      ins = {count: [ti, coordinates, rssi]}
+      print(ins)
+      
+      UID.set_var_objs(ins)
+      
+    else:
       count = 1
       first_ins = {count: [ti, coordinates, rssi]}
                   
       id = UID(first_ins, model, code, count)
             
-      
-    #Adds the other instances of an ID in the UID class
-    else:
-      count = id.count + 1
-      ins = {count: [ti, coordinates, rssi]}
-      print(ins)
-      
-      UID.add_var_objs(ins)
 
