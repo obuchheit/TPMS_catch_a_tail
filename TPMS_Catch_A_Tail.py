@@ -12,30 +12,31 @@ ln = 0
 with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
 
-  for line in csv_reader[sln:]:
+  for line in csv_reader:
     ln += 1
     
-    count = 1
-    id = line['id']
+    id = int(line['id'])
     ti = line['time']
-    lat = line['lat']
-    lon = line['lon']
+    coordinates = float(line['lat']), float(line['lon'])
     model = line['model']
-    rssi = line['rssi']
-    code = line['code']
+    rssi = float(line['rssi'])
+    code = int(line['code'])
+    
+    
     
     #Adds a new ID to the UID class
-    if id not in tclass.UID and tclass.IgnoreList:
+    if isinstance(id, tclass.UID) == False:
       count = 1
-      
-      id = tclass.UID()
-
+      first_ins = {count: [ti, coordinates, rssi]}
+                  
+      id = tclass.UID(model, code, count)
+      id.var_objs = first_ins 
     #Adds the other instances of an ID in the UID class
-    if id in tclass.UID:
+    else:
+      count = id.count + 1
+      ins = {count: [ti, coordinates, rssi]}
+      print(ins)
       
-      tclass.UID.set_var_objs()
+      tclass.UID.add_var_objs(ins)
 
-
-    #Set instance in class ID
-    id = tclass.ID()
 

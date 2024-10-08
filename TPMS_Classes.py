@@ -1,27 +1,24 @@
-import csv
-import TPMS_Catch_A_Tail as cat
 
-class ID:
-  '''Creates a dictionary of all collected instances of a TPMS Tx.'''
   
-  def __init__(self, time, grid_count, model, rssi, code):
-    self.time = time
-    self.grid_count = grid_count
-    self.model = model
-    self.rssi = rssi 
-    self.code = code
-
-  def get_time(self):
-    return self.time
-  
-class UID(ID):
+class UID:
   '''Makes a new unique id with a list of permanent items and dict of changable items linked to a Tire Pressure Sensor Monitor.'''
 
-  def __init__(self):
-    pass
+  def __init__(self, model, code, count):
 
-  def set_var_objs(self): 
-    pass
+    self.var_objs = {}
+    self.model = model
+    self.code = code
+    self.count = count
+
+  def add_var_objs(self, ins): 
+    self.count += 1
+    
+    #might need to do this in other file
+    self.var_objs = ins
+  
+  def get_var_objs(self):
+    return self.var_objs
+        
 
 
 class TargetDeck:
