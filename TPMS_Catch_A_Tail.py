@@ -1,4 +1,4 @@
-import TPMS_Classes as tclass
+from TPMS_Classes import UID
 import csv
 import os
 import time
@@ -15,28 +15,28 @@ with open('test.csv', 'r') as csv_file:
   for line in csv_reader:
     ln += 1
     
-    id = int(line['id'])
+    id_int = int(line['id'])
+    id = f"id_{id_int}"
     ti = line['time']
     coordinates = float(line['lat']), float(line['lon'])
     model = line['model']
     rssi = float(line['rssi'])
     code = int(line['code'])
-    
-    
+        
     
     #Adds a new ID to the UID class
-    if isinstance(id, tclass.UID) == False:
+    if isinstance(id, UID) == False:
       count = 1
       first_ins = {count: [ti, coordinates, rssi]}
                   
-      id = tclass.UID(model, code, count)
-      id.var_objs = first_ins 
+      id = UID(first_ins, model, code, count)
+            
+      
     #Adds the other instances of an ID in the UID class
     else:
       count = id.count + 1
       ins = {count: [ti, coordinates, rssi]}
       print(ins)
       
-      tclass.UID.add_var_objs(ins)
-
+      UID.add_var_objs(ins)
 
