@@ -12,6 +12,8 @@ ln = 0
 with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
 
+
+  #need to make for loop start at the point we left off
   for line in csv_reader:
     ln += 1
     
@@ -25,8 +27,8 @@ with open('test.csv', 'r') as csv_file:
         
     
     #Adds a new ID to the UID class
-    if isinstance(id, UID):
-      count = id.count + 1
+    if isinstance(line['id'], UID):
+      count = line['id'].count + 1
       ins = {count: [ti, coordinates, rssi]}
       print(ins)
       
@@ -35,7 +37,7 @@ with open('test.csv', 'r') as csv_file:
     else:
       count = 1
       first_ins = {count: [ti, coordinates, rssi]}
-                  
-      id = UID(first_ins, model, code, count)
-            
+      
+      line['id'] = UID(first_ins, model, code, count)
 
+  
