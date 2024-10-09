@@ -10,13 +10,18 @@ ids = {}
 with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
   for row in csv_reader:
+      
+      
+    if row['id'] in ids:
+        print(True)
+        
+    else:
+        
+        ids[row['id']] = [
+        row['time'],
+        float(row['lat']),
+        float(row['lon']),
+        row['model'],
+        float(row['rssi']),
+        int(row['code'])]
     
-    ids[row['id']] = [
-    row['time'],
-    float(row['lat']),
-    float(row['lon']),
-    row['model'],
-    float(row['rssi']),
-    int(row['code'])]
-    
-print(ids)
