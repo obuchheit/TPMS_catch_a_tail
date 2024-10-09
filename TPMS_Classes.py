@@ -11,10 +11,7 @@ class UID:
     
     
   def set_var_objs(self, ins): 
-    self.count += 1
-    
-    #might need to do this in other file
-    self.var_objs = ins
+    pass
   
   def get_var_objs(self):
     return self.var_objs       
