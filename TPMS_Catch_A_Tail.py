@@ -2,32 +2,59 @@ from TPMS_Classes import UID
 import csv
 import os
 import time
+import uuid # might not need it
 
 #intializes rtl_433
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 
-sln = 0
 ln = 0
+sln = 0   
 
-with open('test.csv', 'r') as csv_file:
-  csv_reader = csv.DictReader(csv_file)
 
-  #Need to figure out how to loop starting our at 
-  for line in csv_reader:
-    ln += 1
-            
-    #Adds a new ID to the UID class
-    if isinstance(line['id'], UID):
-      count = id.count + 1
-      ins = {line['id']: [line['time'], float(line['lat']), float(line['lon']), line['rssi']]}
-      print(ins)
-      
-      UID.set_var_objs(ins)
-      
-    else:
-      count = 1
-      first_ins = {line['id']: [line['time'], float(line['lat']), float(line['lon']), line['rssi']]}
-      
-                  
-      ids = UID(first_ins, line['model'], line['code'], count)
-            
+
+
+  
+
+
+class ID:
+  def __init__(self, id, time, lat, lon, model, rssi, code): 
+    self.id = id
+    self.time = time
+    self.lat = lat
+    self.lon = lon
+    self.model = model
+    self.rssi = rssi
+    self.code = code
+    
+    #self.sku = str(uuid.uuid4())
+    
+  def display_info(self):
+    print(f"Id: {self.id}, time: {self.time}") #Add other items
+
+  
+class Id_Manager:
+ 
+  def __init__(self):
+    self.ids = []
+    count = 0
+    
+  
+  def load_ids(self):
+      with open('test.csv', 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        self.ids = [ID(
+          int(row['id']), 
+          float(row['lat']),
+          float(row['lon']),
+          row['time'],
+          row['model'],
+          float(row['rssi']),
+          int(row['code']),)
+              for row in csv_reader ] 
+        
+
+    
+test = Id_Manager() 
+
+test.load_ids()
+
