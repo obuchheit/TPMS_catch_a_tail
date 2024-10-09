@@ -6,13 +6,6 @@ import uuid # might not need it
 
 #intializes rtl_433
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
-
-ln = 0
-sln = 0   
-
-
-
-
   
 
 
@@ -36,9 +29,7 @@ class Id_Manager:
  
   def __init__(self):
     self.ids = []
-    count = 0
     
-  
   def load_ids(self):
       with open('test.csv', 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -55,6 +46,5 @@ class Id_Manager:
 
     
 test = Id_Manager() 
-
 test.load_ids()
 
