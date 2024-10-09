@@ -11,7 +11,6 @@ ln = 1
 with open('test.csv', 'r') as csv_file:
   csv_reader = csv.DictReader(csv_file)
   for row in csv_reader:
-    
         
     ids[row['id']] = [
     row['time'],
