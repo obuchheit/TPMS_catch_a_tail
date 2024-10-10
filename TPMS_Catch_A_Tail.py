@@ -6,7 +6,18 @@ import time
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 ids = {}
 startIndex = 0
-    
+
+
+
+class UIDs:
+  def __init__(self, id):
+    self.id = id
+  
+  def add_instance(self, id, time, coords, rssi):
+    self[id]['count'] += 1
+    self[id]['times'].append(time)
+    self[id]['coords'].append(coords)
+    self[id] ['RSSI'].append(rssi)
   
 def Main():
   with open('test.csv', 'r') as csv_file:
