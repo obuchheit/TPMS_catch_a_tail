@@ -16,14 +16,18 @@ def Main():
       if index >= startIndex:
         startIndex = startIndex + 1
         
-        ids[row['id']] = [
-          row['time'],
-          float(row['lat']),
-          float(row['lon']),
-          row['model'],
-          float(row['rssi']),
-          int(row['code']),
-          1]
+        
+        if row['id'] in ids:
+          pass
+        else:
+          ids[row['id']] = [
+            row['time'],
+            float(row['lat']),
+            float(row['lon']),
+            row['model'],
+            float(row['rssi']),
+            int(row['code']),
+            1]
         
       
   
