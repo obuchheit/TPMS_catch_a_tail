@@ -4,10 +4,8 @@ import time
 
 #intializes rtl_433
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
+
 ids = {}
-startIndex = 0
-
-
 
 class IDs:
   def __init__(self, id):
@@ -18,17 +16,18 @@ class IDs:
     self.id['times'].append(time)
     self.id['coords'].append(coords)
     self.id['RSSI'].append(rssi)
-    
     print(self.id)
     
-    
-    
-  
+startIndex = 0
+'''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
 def Main():
+     
   with open('test.csv', 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
+    print(startIndex)
     for index, row in enumerate(csv_reader):
       if index >= startIndex:
+        
         
         #TODO: Figure out a way to += startIndex
         coords = (float(row['lat']), float(row['lon']))
@@ -67,8 +66,6 @@ def Main():
           #Instantiates uid class obj
           uids = IDs(id)
 
-
-    
 Main()
 
 
