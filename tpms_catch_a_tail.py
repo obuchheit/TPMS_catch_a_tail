@@ -19,10 +19,15 @@ class IDs:
     self.id['times'].append(time)
     self.id['coords'].append(coords)
     self.id['RSSI'].append(rssi)
-    print(self.id)
 
   def __str__(self):
-    return f'{self. id}'
+    return f'{self.id}'
+
+
+# class Targets:
+#   def __init__(self, minutes):
+#     self.
+
 
 
 
@@ -64,8 +69,12 @@ def Main():
           #Adds data to UIDs class 
           uids.add_instance(row['id'], row['time'], coords, row['rssi'])
           
+
+          
         else:
+          #Adds first instance of an uid to ids dict
           ids[row['id']] = {
+            'id': row['id'],
             'count': 1,
             'times': [row['time']],
             'coords': [coords],
@@ -74,22 +83,20 @@ def Main():
             'code': int(row['code'])
           }
           
-          id = row['id']
-          #Adds first instance of an uid to ids dict
-          id = {
-            'count': 1,
-            'times': [row['time']],
-            'coords': [coords],
-            'RSSI': [float(row['rssi'])],
-            'model': row['model'],
-            'code': int(row['code'])
-          }
           
           #Instantiates uid class obj
+          id = row['id']
+          id = {
+            'id': row['id'],
+            'count': 1,
+            'times': [row['time']],
+            'coords': [coords],
+            'RSSI': [float(row['rssi'])],
+            'model': row['model'],
+            'code': int(row['code'])
+          }
           uids = IDs(id)
-
           save_last_index(index + 1)
-          print(uids)
 
   '''Start other functions from here'''
   for key in ids:
@@ -107,8 +114,10 @@ def Main():
         print(f'ID {key} was seen 5 minutes apart.')
       else:
         pass
-      
+  print(uids.id)
 Main()
+
+
 
 
 
