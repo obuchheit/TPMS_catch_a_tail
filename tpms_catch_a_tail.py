@@ -8,7 +8,6 @@ import atexit
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 
 ids = {}
-five_min_ids_list = []
 
 
 class IDs:
@@ -20,7 +19,12 @@ class IDs:
     self.id['times'].append(time)
     self.id['coords'].append(coords)
     self.id['RSSI'].append(rssi)
-    #print(self.id)
+    print(self.id)
+
+  def __str__(self):
+    return f'{self. id}'
+
+
 
 '''Reads a text file to give the csv_reader a start index'''
 def read_start_index():
@@ -85,7 +89,7 @@ def Main():
           uids = IDs(id)
 
           save_last_index(index + 1)
-  
+          print(uids)
 
   '''Start other functions from here'''
   for key in ids:
@@ -105,6 +109,8 @@ def Main():
         pass
       
 Main()
+
+
 
 
 
