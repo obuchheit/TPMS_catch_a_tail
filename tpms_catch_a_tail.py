@@ -1,5 +1,6 @@
 import csv
 import os
+from datetime import datetime
 import time
 import atexit
 
@@ -7,6 +8,7 @@ import atexit
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 
 ids = {}
+five_min_ids_list = []
 
 
 class IDs:
@@ -18,7 +20,7 @@ class IDs:
     self.id['times'].append(time)
     self.id['coords'].append(coords)
     self.id['RSSI'].append(rssi)
-    print(self.id)
+    #print(self.id)
 
 '''Reads a text file to give the csv_reader a start index'''
 def read_start_index():
@@ -55,7 +57,7 @@ def Main():
           ids[row['id']]['coords'].append(coords)
           ids[row['id']]['RSSI'].append(float(row['rssi']))
           
-          #Adds data to UIDs class // DOESN'T WORK
+          #Adds data to UIDs class 
           uids.add_instance(row['id'], row['time'], coords, row['rssi'])
           
         else:
@@ -83,13 +85,33 @@ def Main():
           uids = IDs(id)
 
           save_last_index(index + 1)
+  
 
   '''Start other functions from here'''
-
-
-        
-
+  for key in ids:
+    if ids[key]['count'] > 1:
+      times = ids[key]['times']
+      first_time = (times[0][-7] + times[0][-5] + times[0][-4])
+      last_time = (times[-1][-7] + times[-1][-5] + times[-1][-4])
+      difference = int(last_time) - int(first_time)
+      
+      if difference >= 15:
+        print(f'ID {key} was seen 15 minutes apart.')
+      elif 15 > difference >= 10:
+        print(f'ID {key} was seen 10 minutes apart.')
+      elif 10 > difference >= 5:
+        print(f'ID {key} was seen 5 minutes apart.')
+      else:
+        pass
+      
 Main()
 
 
-atexit.register(delete_txt_file)
+
+
+
+#For testing keep this in.
+os.system('rm start_index.txt')
+
+'''Initiates del_txt_file'''
+#atexit.register(delete_txt_file)
