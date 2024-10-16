@@ -60,9 +60,8 @@ def save_last_index(index):
 
 
 '''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
-def process_csv():
+def process_csv(uids_dict):
   startIndex = read_start_index()
-  uids_dict = {}
 
   with open('test.csv', 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -81,10 +80,22 @@ def process_csv():
 
 
         save_last_index(index + 1)
-  return uids_dict
-  
 
-  '''Start other functions from here'''
+
+
+def main():
+  uids_dict = {}
+
+  while True:
+    process_csv(uids_dict)
+
+    for obj in uids_dict.values():
+      print(obj)
+    
+    time.sleep(30)
+
+    
+
 
 
   # for key in ids:
@@ -104,15 +115,11 @@ def process_csv():
   #       pass
 
 if __name__=="__main__":
+  main()
+ 
 
-  '''Allows for constant running of the program until manually stopped.'''
-  #while True:
-    #put main functions in here
-    #time.sleep(60)
-  uids_dict_objects = process_csv()
 
-  for obj in uids_dict_objects.values():
-    print(obj)
+    
 
 
 
