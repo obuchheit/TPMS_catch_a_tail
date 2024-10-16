@@ -7,21 +7,30 @@ import atexit
 #intializes rtl_433
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 
-ids = {}
-
 
 class IDs:
-  def __init__(self, id):
+  def __init__(self, id, time, coord, rssi, model, code):
     self.id = id
+    self.count = 1
+    self.times = [time]
+    self.coords = [coord]
+    self.rssi = [rssi]
+    self.model = model
+    self.code = code
+
   
-  def add_instance(self, id, time, coords, rssi):
-    self.id['count'] += 1
-    self.id['times'].append(time)
-    self.id['coords'].append(coords)
-    self.id['RSSI'].append(rssi)
+  def add_instance(self, time, coord, rssi):
+    self.count += 1
+    self.times.append(time)
+    self.coords.append(coord)
+    self.rssi.append(rssi)
 
   def __str__(self):
-    return f'{self.id}'
+    return f'ID: {self.id}, Times: {self.times}'
+  
+class TargetIds:
+  pass
+
 
 
 # class Targets:
@@ -31,17 +40,18 @@ class IDs:
 
 
 
-'''Reads a text file to give the csv_reader a start index'''
+  '''Reads a text file to give the csv_reader a start index'''
 def read_start_index():
   if os.path.exists('start_index.txt'):
     with open('start_index.txt', 'r') as f:
       return int(f.read().strip())
   return 0
 
-'''Saves the last index of the csv_reader for loop.'''
+  '''Saves the last index of the csv_reader for loop.'''
 def save_last_index(index):
   with open('start_index.txt', 'w') as f:
     f.write(str(index))
+
 
 '''Deletes the start_index file upon exiting the program'''
 # def delete_txt_file():
@@ -50,78 +60,59 @@ def save_last_index(index):
 
 
 '''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
-def Main():
+def process_csv():
   startIndex = read_start_index()
+  uids_dict = {}
 
   with open('test.csv', 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for index, row in enumerate(csv_reader):
       if index >= startIndex:
         coords = (float(row['lat']), float(row['lon']))
-        
-        if row['id'] in ids:
-          #Adds data to ids dict
-          ids[row['id']]['count'] += 1
-          ids[row['id']]['times'].append(row['time'])
-          ids[row['id']]['coords'].append(coords)
-          ids[row['id']]['RSSI'].append(float(row['rssi']))
-          
-          #Adds data to UIDs class 
-          uids.add_instance(row['id'], row['time'], coords, row['rssi'])
-          
+        id = row['id']
 
-          
+        '''Adds new identifiers to the IDs class'''
+        if id not in uids_dict:
+          uids_dict[id] = IDs(id, row['time'], coords, float(row['rssi']), row['model'], int(row['code']))
+
+          '''Appends new data if the same identifier is seen'''
         else:
-          #Adds first instance of an uid to ids dict
-          ids[row['id']] = {
-            'id': row['id'],
-            'count': 1,
-            'times': [row['time']],
-            'coords': [coords],
-            'RSSI': [float(row['rssi'])],
-            'model': row['model'],
-            'code': int(row['code'])
-          }
-          
-          
-          #Instantiates uid class obj
-          id = row['id']
-          id = {
-            'id': row['id'],
-            'count': 1,
-            'times': [row['time']],
-            'coords': [coords],
-            'RSSI': [float(row['rssi'])],
-            'model': row['model'],
-            'code': int(row['code'])
-          }
-          uids = IDs(id)
-          save_last_index(index + 1)
+          uids_dict[id].add_instance(row['time'], coords, float(row['rssi']))
+
+
+        save_last_index(index + 1)
+  return uids_dict
+  
 
   '''Start other functions from here'''
-  for key in ids:
-    if ids[key]['count'] > 1:
-      times = ids[key]['times']
-      first_time = (times[0][-7] + times[0][-5] + times[0][-4])
-      last_time = (times[-1][-7] + times[-1][-5] + times[-1][-4])
-      difference = int(last_time) - int(first_time)
+
+
+  # for key in ids:
+  #   if ids[key]['count'] > 1:
+  #     times = ids[key]['times']
+  #     first_time = (times[0][-7] + times[0][-5] + times[0][-4])
+  #     last_time = (times[-1][-7] + times[-1][-5] + times[-1][-4])
+  #     difference = int(last_time) - int(first_time)
       
-      if difference >= 15:
-        print(f'ID {key} was seen 15 minutes apart.')
-      elif 15 > difference >= 10:
-        print(f'ID {key} was seen 10 minutes apart.')
-      elif 10 > difference >= 5:
-        print(f'ID {key} was seen 5 minutes apart.')
-      else:
-        pass
-  print(uids.id)
-Main()
+  #     if difference >= 15:
+  #       print(f'ID {key} was seen 15 minutes apart.')
+  #     elif 15 > difference >= 10:
+  #       print(f'ID {key} was seen 10 minutes apart.')
+  #     elif 10 > difference >= 5:
+  #       print(f'ID {key} was seen 5 minutes apart.')
+  #     else:
+  #       pass
 
+if __name__=="__main__":
 
+  '''Allows for constant running of the program until manually stopped.'''
+  #while True:
+    #put main functions in here
+    #time.sleep(60)
+  uids_dict_objects = process_csv()
 
-
-
-
+  for obj in uids_dict_objects.values():
+    print(obj)
 
 
 
