@@ -17,6 +17,7 @@ class IDs:
     self.rssi = [rssi]
     self.model = model
     self.code = code
+    self.first_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
 
   
   def add_instance(self, time, coord, rssi):
@@ -25,19 +26,18 @@ class IDs:
     self.coords.append(coord)
     self.rssi.append(rssi)
 
+    last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
+    self.difference_time = last_time - self.first_time
+
+    print(f' ID: {self.id} has a first time of: {self.first_time} and last time of: {last_time} and difference of: {self.difference_time}')
+    print(self.times)
+  
+
   def __str__(self):
     return f'ID: {self.id}, Times: {self.times}'
   
 class TargetIds:
   pass
-
-
-
-# class Targets:
-#   def __init__(self, minutes):
-#     self.
-
-
 
 
   '''Reads a text file to give the csv_reader a start index'''
@@ -54,15 +54,14 @@ def save_last_index(index):
 
 
 '''Deletes the start_index file upon exiting the program'''
-# def delete_txt_file():
-#   os.system("rm start_index.txt")
+def delete_txt_file():
+  os.system("rm start_index.txt")
 
 
 
 '''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
 def process_csv(uids_dict):
   startIndex = read_start_index()
-
   with open('test.csv', 'r') as csv_file:
     csv_reader = csv.DictReader(csv_file)
     for index, row in enumerate(csv_reader):
@@ -78,7 +77,6 @@ def process_csv(uids_dict):
         else:
           uids_dict[id].add_instance(row['time'], coords, float(row['rssi']))
 
-
         save_last_index(index + 1)
 
 
@@ -88,16 +86,14 @@ def main():
 
   while True:
     process_csv(uids_dict)
-
+    
     for obj in uids_dict.values():
-      print(obj)
+      pass
+      #print(obj)
     
     time.sleep(30)
 
     
-
-
-
   # for key in ids:
   #   if ids[key]['count'] > 1:
   #     times = ids[key]['times']
@@ -116,15 +112,4 @@ def main():
 
 if __name__=="__main__":
   main()
- 
-
-
-    
-
-
-
-#For testing keep this in.
-os.system('rm start_index.txt')
-
-'''Initiates del_txt_file'''
-#atexit.register(delete_txt_file)
+atexit.register(delete_txt_file)
