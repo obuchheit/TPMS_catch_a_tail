@@ -29,16 +29,13 @@ class IDs:
     last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
     self.difference_time = last_time - self.first_time
 
-    print(f' ID: {self.id} has a first time of: {self.first_time} and last time of: {last_time} and difference of: {self.difference_time}')
-    print(self.times)
+    if self.difference_time > 15:
+      pass
   
 
   def __str__(self):
     return f'ID: {self.id}, Times: {self.times}'
-  
-class TargetIds:
-  pass
-
+    
 
   '''Reads a text file to give the csv_reader a start index'''
 def read_start_index():
@@ -93,23 +90,8 @@ def main():
     
     time.sleep(30)
 
-    
-  # for key in ids:
-  #   if ids[key]['count'] > 1:
-  #     times = ids[key]['times']
-  #     first_time = (times[0][-7] + times[0][-5] + times[0][-4])
-  #     last_time = (times[-1][-7] + times[-1][-5] + times[-1][-4])
-  #     difference = int(last_time) - int(first_time)
-      
-  #     if difference >= 15:
-  #       print(f'ID {key} was seen 15 minutes apart.')
-  #     elif 15 > difference >= 10:
-  #       print(f'ID {key} was seen 10 minutes apart.')
-  #     elif 10 > difference >= 5:
-  #       print(f'ID {key} was seen 5 minutes apart.')
-  #     else:
-  #       pass
 
 if __name__=="__main__":
   main()
+
 atexit.register(delete_txt_file)
