@@ -9,6 +9,10 @@ import atexit
 
 
 class IDs:
+  five_minute_ids = []
+  ten_miute_ids = []
+  fifteen_minute_ids = []
+
   def __init__(self, id, time, coord, rssi, model, code):
     self.id = id
     self.count = 1
@@ -25,12 +29,10 @@ class IDs:
     self.times.append(time)
     self.coords.append(coord)
     self.rssi.append(rssi)
+    self.last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
+    
+    self.difference_time = self.last_time - self.first_time
 
-    last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
-    self.difference_time = last_time - self.first_time
-
-    if self.difference_time > 15:
-      pass
   
 
   def __str__(self):
