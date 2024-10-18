@@ -3,12 +3,8 @@ import os
 import time
 import math
 
-#intializes rtl_433
-#os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
-
 
 class IDs:
-
   def __init__(self, id, time, coord, rssi, model, code):
     self.id = id
     self.count = 1
@@ -19,7 +15,6 @@ class IDs:
     self.code = code
     self.first_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
 
-  
   def add_instance(self, time, coord, rssi):
     self.count += 1
     self.times.append(time)
@@ -28,7 +23,6 @@ class IDs:
     self.last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
     self.difference_time = self.last_time - self.first_time
     self.difference_distance = self.calulate_distance(self.coords[0][0], self.coords[0][1], self.coords[-1][0], self.coords[-1][1])
-    print(f'{self.id} has been seen {self.count} times. It was seen {self.difference_distance} Km and {self.difference_time} minutes apart')
 
   @staticmethod
   def calulate_distance(lat1, lon1, lat2, lon2):
@@ -51,20 +45,24 @@ class IDs:
   def __str__(self):
     return f'ID: {self.id}, Times: {self.times}'
   
-    
+  '''TODO: Create an ignore list that won't add any of the Ids to the output.
+          - Add a function where the user can manually add Ids to ignore list.'''
+class IgnoreList:
+  pass
+
+'''TODO: At the closing of the program, give the user an option to make a csv file with the data that can be used in Google Earth'''
+class MakeCSV:
+  pass
 
   '''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
 class Csv:
-
   def __init__(self, file):
     self.file = file
     self.start_index = 0
     self.uids_dict = {}
 
-
-
   def process_csv(self):
-    with open('test.csv') as csv_file:
+    with open(self.file) as csv_file:
       csv_reader = csv.DictReader(csv_file)
       for index, row in enumerate(csv_reader):
         if index >= self.start_index:
@@ -83,16 +81,19 @@ class Csv:
 
 
 
-def main():
+def start_rtl_433():
+  #intializes rtl_433
+  os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
 
+def main():
   while True:
-    test = Csv('test.csv')
+    test = Csv('test.csv') #change argument of CSv after once finished
     test.process_csv()
     # for obj in test.uids_dict.values():
     #   print(obj)
-    
     time.sleep(30)
 
 
 if __name__=="__main__":
+  #start_rtl_433()
   main()
