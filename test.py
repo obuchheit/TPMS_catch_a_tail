@@ -1,8 +1,7 @@
 import csv
 import os
-from datetime import datetime
 import time
-import atexit
+import math
 
 #intializes rtl_433
 #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
@@ -27,19 +26,34 @@ class IDs:
     self.coords.append(coord)
     self.rssi.append(rssi)
     self.last_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
-    
     self.difference_time = self.last_time - self.first_time
-    print(f'{self.id} has been seen {self.count} times. Last time was {self.last_time}')
+    self.difference_distance = self.calulate_distance(self.coords[0][0], self.coords[0][1], self.coords[-1][0], self.coords[-1][1])
+    print(f'{self.id} has been seen {self.count} times. It was seen {self.difference_distance} Km and {self.difference_time} minutes apart')
 
-  
+  @staticmethod
+  def calulate_distance(lat1, lon1, lat2, lon2):
+    #Convert degrees to radians
+    lat1_rad = math.radians(lat1)
+    lon1_rad = math.radians(lon1)
+    lat2_rad = math.radians(lat2)
+    lon2_rad = math.radians(lon2)
+
+    #Hversine Formula
+    dlon = lon2_rad - lon1_rad
+    dlat = lat2_rad - lat1_rad
+    a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlon / 2)**2
+    c = 2 * math.asin(math.sqrt(a))
+
+    #Radius of Earth in Km 
+    r = 6371.0
+    return c * r
 
   def __str__(self):
     return f'ID: {self.id}, Times: {self.times}'
+  
     
 
-
-
-'''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
+  '''Loops through csv file from rtl_433 and pushes data into dictionaries'''  
 class Csv:
 
   def __init__(self, file):
@@ -83,4 +97,3 @@ def main():
 if __name__=="__main__":
   main()
 
-atexit.register(delete_txt_file)
