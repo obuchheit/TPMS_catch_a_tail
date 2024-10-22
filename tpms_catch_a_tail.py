@@ -1,6 +1,7 @@
 import csv
 import os
 import time
+import configparser
 from id_classes import IDs
 
 class Csv:

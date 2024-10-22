@@ -1,13 +1,11 @@
 TODO
--clean up code with dict bims and utilize those over bracket notation.
--could make a main class or include class variables in the IDs class for easier storage of various things like the index and an class obj dict. Or use class methods.
--Need to figure out how to calculate time difference and initialeze a print of the 5 min, 10 min, and 15 min objs.
--Need to figure out how to calculate distance and a try else block if there is no gps lock.
+-Try else block for no gps lock
+-Terminal or gui?
 -Need to figure out how to make an output file for displaying data on a map to include route. KML for route and csv for data
 -Can use python debugger to keep track of local and global variables.
--Include a default file for bool vars for customization.
+-Finish ini file.
 -Create kargs maybe?
-
+track_name
 
 2024-10-03 21:27:48,,,38.443065000,-91.022605000,ASK,315.006,,,-0.114,13.421,-13.535,Ford-CarRemote,,154870,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2024-10-03 21:28:48,,,38.443065000,-91.022605000,ASK,315.005,,,-0.116,13.892,-14.008,Ford-CarRemote,,154870,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
