@@ -39,11 +39,20 @@ def start_rtl_433():
 
 def main():
   while True:
-    test = Csv('test.csv') #change argument of CSv after once finished
-    test.process_csv()
-    for obj in test.uids_dict.values():
-       print(obj)
-    time.sleep(30)
+    '''Adds listeners to execute specific code when the program is terminated.'''
+    signal.signal(signal.SIGINT, RouteMaker.create_kml)
+    signal.signal(signal.SIGTERM, RouteMaker.create_kml)
+
+    try:
+      test = Csv('test.csv') #change argument of CSv after once finished
+      test.process_csv()
+      for obj in test.uids_dict.values():
+        print(obj)
+      time.sleep(30)
+    except KeyboardInterrupt:
+      '''Creates kml file of the route upon program termination'''
+      RouteMaker.create_kml()
+
 
 
 if __name__=="__main__":
