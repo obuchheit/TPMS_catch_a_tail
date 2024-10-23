@@ -1,7 +1,6 @@
 import math
 
-class IgnoreList:
-  pass
+
 
 '''TODO: At the closing of the program, give the user an option to make a csv file with the data that can be used in Google Earth'''
 class MakeCSV:
@@ -15,14 +14,14 @@ class MakeCSV:
 
 
 class IDs:
-  def __init__(self, id, time, coord, rssi, model, code):
+  targets = {}
+  def __init__(self, id, time, coord, rssi, model):
     self.id = id
     self.count = 1
     self.times = [time]
     self.coords = [coord]
     self.rssi = [rssi]
     self.model = model
-    self.code = code
     self.first_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
 
   def add_instance(self, time, coord, rssi):
@@ -52,6 +51,12 @@ class IDs:
     #Radius of Earth in Km 
     r = 6371.0
     return c * r
+  
 
   def __str__(self):
-    return f'ID: {self.id}, Times: {self.times}'
+    if self.difference_distance > 1 and self.difference_time > 5:
+      return f'''
+{self.model} with ID {self.id} was seen:\n 
+{self.difference_time} minutes apart and {self.difference_distance} Kms apart.'''
+
+      

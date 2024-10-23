@@ -20,7 +20,7 @@ class RouteMaker:
                 self.data_stream = self.gps_socket.get_current_data()
                 if self.data_stream['lat'] != 0.0 and self.data_stream['lon'] != 0.0:
                     self.add_point(self.data_stream['lat'], self.data_stream['lon'])
-                time.sleep(1)  # Adjust the frequency as necessary
+                time.sleep(5)  # Adjust the frequency as necessary
         except KeyboardInterrupt:
             print("Tracking stopped.")
             self.create_kml()

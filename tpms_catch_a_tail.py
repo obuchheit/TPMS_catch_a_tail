@@ -23,13 +23,25 @@ class Csv:
           id = row['id'] 
 
           if id not in self.uids_dict: 
-            self.uids_dict[id] = IDs(id, row['time'], coords, float(row['rssi']), row['model'], int(row['code']))
+            self.uids_dict[id] = IDs(id, row['time'], coords, float(row['rssi']), row['model'])
 
           else:
             self.uids_dict[id].add_instance(row['time'], coords, float(row['rssi']))
 
         self.start_index = index + 1
     self.start_index += 1
+
+
+
+  def csv_maker(self):
+
+    csv_file = 'google_earth.csv' #change to a var name
+
+    with open(csv_file, mode='w', newline='') as file:
+        writer = csv.writer(file)
+
+        writer.writerow(['id', 'model', 'coords', 'times', 'rssi'])
+        #Write for loops
 
 
 '''Intializes rtl_433'''
@@ -44,11 +56,10 @@ def main():
     signal.signal(signal.SIGTERM, RouteMaker.create_kml)
 
     try:
-      test = Csv('test.csv') #change argument of CSv after once finished
       test.process_csv()
       for obj in test.uids_dict.values():
         print(obj)
-      time.sleep(30)
+      time.sleep(60)
     except KeyboardInterrupt:
       '''Creates kml file of the route upon program termination'''
       RouteMaker.create_kml()
@@ -57,4 +68,6 @@ def main():
 
 if __name__=="__main__":
   #start_rtl_433()
+  time.sleep(120)
+  test = Csv('test.csv') #change argument of CSv after once finished
   main()

@@ -1,7 +1,8 @@
 TODO
 -Try else block for no gps lock
+-Also might have to switch from lat, lon to lon, lat, pending on google earths needs.
 -Terminal or gui?
--Need to figure out how to make an output file for displaying data on a map to include route. KML for route and csv for data
+-Need to figure out how to make an output file for displaying data on a map.
 -Can use python debugger to keep track of local and global variables.
 -Finish ini file.
 -Create kargs maybe?
