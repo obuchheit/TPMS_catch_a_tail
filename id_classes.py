@@ -17,6 +17,8 @@ class IDs:
     self.rssi = [rssi]
     self.model = model
     self.first_time = (int(time[-7]) * 60) + (int(time[-5]) * 10) + (int(time[-4]))
+    self.difference_distance = 0
+    self.difference_time = 0
 
   def add_instance(self, time, coord, rssi):
     self.count += 1
@@ -48,7 +50,7 @@ class IDs:
   
 
   def __str__(self):
-    if self.difference_distance > 1 and self.difference_time > 5:
+    if self.difference_time > 5:
       return f'''
 {self.model} with ID {self.id} was seen:\n 
 {self.difference_time} minutes apart and {self.difference_distance} Kms apart.'''

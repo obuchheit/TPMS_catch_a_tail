@@ -1,5 +1,5 @@
 import time
-from gps3 import GPS3
+#from gps3 import GPS3 #doesn't work
 import simplekml
 
 class RouteMaker:

@@ -3,7 +3,6 @@ import os
 import time
 import configparser
 from id_classes import IDs
-from route_generator import RouteMaker
 import sys
 import signal
 
@@ -32,55 +31,54 @@ class Csv:
     self.start_index += 1
 
 
-
-  def google_earth_csv_maker(self):
+  '''Makes a csv file for google earth''' #TODO: fix csv formating
+  def google_earth_csv_maker(signum, frame):
 
     csv_file = 'google_earth.csv' #change to a var name
 
     with open(csv_file, mode='w', newline='') as file:
-        fieldnames = ['id', 'model', 'count', 'coordinates', 'times', 'rssi']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        fieldnames = ['id', 'model', 'count', 'lat', 'lon', 'times', 'rssi']
+
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
         
         writer.writeheader()
 
-        for instance in self.uids_dict.values():
+        for instance in test.uids_dict.values():
           for i in range(instance.count):
             writer.writerow({
-              'ID': instance.id,
-              'Model': instance.model,
-              'Count': instance.count,
-              'Coordinates': f"{instance.coordinates[i][0]},{instance.coordinates[i][1]}",
-              'Times': instance.times[i],
-              'RSSI': instance.rssi
+              'id': instance.id,
+              'model': instance.model,
+              'count': instance.count,
+              'lat': instance.coords[i][0],
+              'lon': instance.coords[i][1],
+              'times': instance.times[i],
+              'rssi': instance.rssi
             })
-            
+    print('csv_file made.')
         
 
 
 '''Intializes rtl_433'''
 def start_rtl_433():
-  os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
-
-
+  #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
+  pass
 def main():
   while True:
-    '''Adds listeners to execute specific code when the program is terminated.'''
-    signal.signal(signal.SIGINT, RouteMaker.create_kml)
-    signal.signal(signal.SIGTERM, RouteMaker.create_kml)
+    test.process_csv()
+    '''Doesn't work'''
+    # for obj in test.uids_dict.values():
+    #   print(obj)
+    time.sleep(60)
 
-    try:
-      test.process_csv()
-      for obj in test.uids_dict.values():
-        print(obj)
-      time.sleep(60)
-    except KeyboardInterrupt:
-      '''Creates kml file of the route upon program termination'''
-      RouteMaker.create_kml()
 
 
 
 if __name__=="__main__":
   #start_rtl_433()
-  time.sleep(120)
+  #time.sleep(120)
   test = Csv('test.csv') #change argument of CSv after once finished
+
+  '''Adds listeners to execute specific code when the program is terminated.'''
+  signal.signal(signal.SIGINT, Csv.google_earth_csv_maker)
+  signal.signal(signal.SIGTERM, Csv.google_earth_csv_maker)
   main()
