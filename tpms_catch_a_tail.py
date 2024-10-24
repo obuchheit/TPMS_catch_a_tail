@@ -31,7 +31,7 @@ class Csv:
     self.start_index += 1
 
 
-  '''Makes a csv file for google earth''' #TODO: fix csv formating
+  '''Makes a csv file for google earth'''
   def google_earth_csv_maker(signum, frame):
 
     csv_file = 'google_earth.csv' #change to a var name
