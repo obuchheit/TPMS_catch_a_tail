@@ -37,22 +37,22 @@ class Csv:
     csv_file = 'google_earth.csv' #change to a var name
 
     with open(csv_file, mode='w', newline='') as file:
-        fieldnames = ['id', 'model', 'count', 'lat', 'lon', 'times', 'rssi']
+        fieldnames = ['id', 'model', 'instance', 'lat', 'lon', 'times', 'rssi']
 
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         
         writer.writeheader()
 
         for instance in test.uids_dict.values():
-          for i in range(instance.count):
+          for index, i in enumerate(range(instance.count)):
             writer.writerow({
               'id': instance.id,
               'model': instance.model,
-              'count': instance.count,
+              'instance': index + 1,
               'lat': instance.coords[i][0],
               'lon': instance.coords[i][1],
               'times': instance.times[i],
-              'rssi': instance.rssi
+              'rssi': instance.rssi[i]
             })
     print('csv_file made.')
         
