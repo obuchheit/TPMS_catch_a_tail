@@ -33,15 +33,28 @@ class Csv:
 
 
 
-  def csv_maker(self):
+  def google_earth_csv_maker(self):
 
     csv_file = 'google_earth.csv' #change to a var name
 
     with open(csv_file, mode='w', newline='') as file:
-        writer = csv.writer(file)
+        fieldnames = ['id', 'model', 'count', 'coordinates', 'times', 'rssi']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        
+        writer.writeheader()
 
-        writer.writerow(['id', 'model', 'coords', 'times', 'rssi'])
-        #Write for loops
+        for instance in self.uids_dict.values():
+          for i in range(instance.count):
+            writer.writerow({
+              'ID': instance.id,
+              'Model': instance.model,
+              'Count': instance.count,
+              'Coordinates': f"{instance.coordinates[i][0]},{instance.coordinates[i][1]}",
+              'Times': instance.times[i],
+              'RSSI': instance.rssi
+            })
+            
+        
 
 
 '''Intializes rtl_433'''

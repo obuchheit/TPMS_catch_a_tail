@@ -1,12 +1,6 @@
 import math
 
-
-
-'''TODO: At the closing of the program, give the user an option to make a csv file with the data that can be used in Google Earth'''
-class MakeCSV:
-  pass
-
-  '''Loops through csv file from rtl_433 and pushes data into dictionaries''' 
+'''Loops through csv file from rtl_433 and pushes data into dictionaries''' 
 
 '''TODO: Create an ignore list that won't add any of the Ids to the output.
           - Add a function where the user can manually add Ids to ignore list.
