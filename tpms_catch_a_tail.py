@@ -5,6 +5,7 @@ import configparser
 from id_classes import IDs
 import sys
 import signal
+from kml_generator import GPSDataCollector, GPSKMLGenerator
 
 class Csv:
   def __init__(self, file):
@@ -81,4 +82,28 @@ if __name__=="__main__":
   '''Adds listeners to execute specific code when the program is terminated.'''
   signal.signal(signal.SIGINT, Csv.google_earth_csv_maker)
   signal.signal(signal.SIGTERM, Csv.google_earth_csv_maker)
+
+  #main function
   main()
+
+
+  # Initialize GPS data collector and KML generator
+  gps_collector = GPSDataCollector()
+  kml_generator = GPSKMLGenerator("my_gps_data.kml")
+  # Collect GPS data and add to KML
+  try:
+      while True:
+          location = gps_collector.get_location()
+          if location:
+              latitude, longitude = location
+              kml_generator.add_point("Current Location", latitude, longitude)
+              print(f"Added point: {latitude}, {longitude}")
+
+          time.sleep(5)  # Add a sleep to avoid overwhelming the GPS daemon
+  except KeyboardInterrupt:
+      print("Stopping GPS data collection.")
+      kml_generator.add_line()  # Add line before saving KML
+
+  # Save the KML file when done
+  kml_generator.save()
+  print("KML file saved.")
