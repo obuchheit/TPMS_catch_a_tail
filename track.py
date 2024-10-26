@@ -1,6 +1,5 @@
 import simplekml
 import gpsd
-import time
 
 
 class GPSKMLGenerator:
@@ -36,30 +35,3 @@ class GPSDataCollector:
             return packet.lat, packet.lon
         return None
 
-# def continuously_run(gps_collector, kml_generator):
-#     """Continuously collect GPS data."""
-#     while running2:
-#         location = gps_collector.get_location()
-#         if location:
-#             latitude, longitude = location
-#             kml_generator.add_point(latitude, longitude)  # Only store coordinates
-#             print(f"Added point: {latitude}, {longitude}")
-
-#         time.sleep(1)  # Add a sleep to avoid overwhelming the GPS daemon
-#     save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
-#     print("KML file saved.")
-
-# Main execution
-# if __name__ == "__main__":
-#     # Initialize GPS data collector and KML generator
-#     gps_collector = GPSDataCollector()
-#     kml_generator = GPSKMLGenerator("my_gps_data.kml")
-
-#     try:
-#         continuously_run(gps_collector, kml_generator)
-#     except KeyboardInterrupt:
-       # print("Stopping GPS data collection.")
-    
-    # Save the KML file with the line when done
-    # save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
-    # print("KML file saved.")

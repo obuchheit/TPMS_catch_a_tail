@@ -93,7 +93,7 @@ def data():
     '''Doesn't work'''
     # for obj in test.uids_dict.values():
     #   print(obj)
-    time.sleep(5)
+    time.sleep(60)
   google_earth_csv_maker()
 
 
