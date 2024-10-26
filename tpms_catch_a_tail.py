@@ -3,7 +3,6 @@ import os
 import time
 from id_classes import IDs
 import signal
-from kml_generator import GPSDataCollector, GPSKMLGenerator
 import threading
 
 class Csv:
@@ -54,8 +53,7 @@ class Csv:
               'times': instance.times[i],
               'rssi': instance.rssi[i]
             })
-    print('csv_file made.')
-        
+
 
 
 '''Intializes rtl_433'''
@@ -63,30 +61,9 @@ def start_rtl_433():
   #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
   pass
 
-def start_kml_generator():
-  # Initialize GPS data collector and KML generator
-  gps_collector = GPSDataCollector()
-  kml_generator = GPSKMLGenerator("my_gps_data.kml")
-  # Collect GPS data and add to KML
-  try:
-      while True:
-          location = gps_collector.get_location()
-          if location:
-              latitude, longitude = location
-              kml_generator.add_point("Current Location", latitude, longitude)
-              print(f"Added point: {latitude}, {longitude}")
+  
 
-          time.sleep(5)  # Add a sleep to avoid overwhelming the GPS daemon
-  except KeyboardInterrupt:
-      print("Stopping GPS data collection.")
-      kml_generator.add_line()  # Add line before saving KML
-
-  # Save the KML file when done
-  kml_generator.save()
-  print("KML file saved.")
-
-
-def main():
+def data():
   while True:
     test.process_csv()
     '''Doesn't work'''
@@ -96,16 +73,19 @@ def main():
 
 
 
-
 if __name__=="__main__":
+  
   #start_rtl_433()
   #time.sleep(120)
-  test = Csv('test.csv') #change argument of CSv after once finished
+  test = Csv('test.csv') #change argument of Csv after once finished
 
   '''Adds listeners to execute specific code when the program is terminated.'''
   signal.signal(signal.SIGINT, Csv.google_earth_csv_maker)
   signal.signal(signal.SIGTERM, Csv.google_earth_csv_maker)
-  #main function
-  main()
+  data()
+
+
+ 
+  
 
 
