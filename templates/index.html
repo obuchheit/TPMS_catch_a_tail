@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="../static/main.css">
 </head>
 <header>
-
+    <div id="title">TPMS Catch a Tail</div>
+    <div id="gps-container">
+        <span>GPS Status:</span>
+        <span id="gps-dot"></span>
+        <span>Lat: 0 Lon: 0</span>
 </header>
 <body>
     <div id="control-panel">
@@ -29,16 +33,19 @@
     </div>
 
     <div id="data-panel">
-        <table id="data-table">
+        <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Model</th>
-                    <th>Times</th>
-                    <th>Location</th>
-                    <th>RSSI</th>
+                    <th class="data-table-header">ID</th>
+                    <th class="data-table-header">Model</th>
+                    <th class="data-table-header">Times</th>
+                    <th class="data-table-header">Location</th>
+                    <th class="data-table-header">RSSI</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr></tr>
+            </tbody>
         </table>
     </div>
 </body>

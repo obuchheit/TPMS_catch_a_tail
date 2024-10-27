@@ -6,11 +6,44 @@ header {
     width: 100%;
     background-color: gray;
     height: 5vmin;
+    display: flex;
+    justify-content: space-between;
 }
 
+#title {
+    align-content: center;
+    color: white;
+    font-size: xx-large;
+    font-weight: 700;
+    margin-left: 5vmin;
+}
 
+#gps-container{
+    margin-right: 5vmin;
+    align-content: center;
+}
+
+#gps-dot {
+    height: 1vmin;
+    width: 1vmin;
+    background-color: red;
+    border: solid black 1px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 2vmin 0 0.5vmin;
+}
+
+#control-panel {
+    margin: 5vmin;
+    padding: 0 3vmin 3vmin 3vmin;
+    border-radius: 3vmin;
+    border: solid 2px black;
+    background-color: lightgray;
+
+}
 .button-container {
     width: 100%;
+    margin: 0 0.5vmin 0 0.5vmin;
 }
 
 
@@ -24,7 +57,7 @@ header {
     height: 25vmin;
     width: 100%;
     cursor: pointer;
-    background-color: lightgray;
+    background-color: white;
     border: solid black 1px;
     font-size: xx-large;
     font-weight: 700;
@@ -36,4 +69,10 @@ header {
 
 #stop {
     color: rgb(173, 33, 33);
+}
+
+.data-table-header {
+    border: solid black 1px;
+    width: 20vmin;
+    margin: 0 ;
 }
