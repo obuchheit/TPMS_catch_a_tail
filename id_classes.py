@@ -50,7 +50,6 @@ class IDs:
   
 
   def __str__(self):
-    if self.difference_time > 5:
       return f'''
 {self.model} with ID {self.id} was seen:\n 
 {self.difference_time} minutes apart and {self.difference_distance} Kms apart.'''

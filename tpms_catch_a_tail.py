@@ -5,6 +5,7 @@ from id_classes import IDs
 import signal
 import threading
 from track import GPSDataCollector, GPSKMLGenerator, save_kml
+import gpsd
 
 running1 = True
 running2 = True
@@ -76,14 +77,42 @@ def start_rtl_433():
 
 def continuously_run(gps_collector, kml_generator):
     """Continuously collect GPS data."""
+    retries = 12
     while running2:
-        location = gps_collector.get_location()
-        if location:
-            latitude, longitude = location
-            kml_generator.add_point(latitude, longitude)  # Only store coordinates
-            print(f"Added point: {latitude}, {longitude}")
+      try:
+        gpsd.connect()
+        packet = gpsd.get_current()
 
-        time.sleep(1)  # Add a sleep to avoid overwhelming the GPS daemon
+        if packet.mode >= 2:  # Check for 2D or better fix
+            retries = 12  # Reset retries after a successful connection
+            location = gps_collector.get_location()
+            if location:
+                latitude, longitude = location
+                kml_generator.add_point(latitude, longitude)  # Only store coordinates
+                print(f"Added point: {latitude}, {longitude}")
+
+            time.sleep(1)  # Add a sleep to avoid overwhelming the GPS daemon
+        else:
+          print("GPS is running but has no fix.") 
+          time.sleep(3)
+      except gpsd.GPSDException as e:
+        print(f"GPS daemon is not running or cannot be accessed: {e}")
+        if retries > 0:
+            print(f"Retrying in 5 seconds... ({retries} retries left)")
+            retries -= 1
+            time.sleep(5)  # Wait before retrying
+        else:
+            print("Max retries reached. Continuing without GPS.")
+
+            # Optionally, reset retries if you want to keep trying later
+            retries = 12  
+            time.sleep(5)  # Wait a bit before the next loop iteration
+
+      except Exception as e:
+          print(f"An unexpected error occurred: {e}")
+          time.sleep(5)  # Wait before retrying in case of unexpected errors
+
+
     save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
     print("KML file saved.")
 
@@ -91,8 +120,10 @@ def data():
   while running1:
     test.process_csv()
     '''Doesn't work'''
-    # for obj in test.uids_dict.values():
-    #   print(obj)
+    for obj in test.uids_dict.values():
+      if obj.difference_time > 5:
+        print(obj)
+
     time.sleep(60)
   google_earth_csv_maker()
 
