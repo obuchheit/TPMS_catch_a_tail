@@ -7,13 +7,14 @@ import threading
 from track import GPSDataCollector, GPSKMLGenerator, save_kml
 import gpsd
 
-running1 = True
-running2 = True
+stop_threads = False
 
 def signal_handler(sig, frame):
-  global running1, running2
-  running1 = False
-  running2 = False
+  global stop_threads
+  stop_threads = True
+
+  google_earth_csv_maker()
+  save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
 
 class Csv:
   def __init__(self, file):
@@ -78,7 +79,7 @@ def start_rtl_433():
 def continuously_run(gps_collector, kml_generator):
     """Continuously collect GPS data."""
     retries = 12
-    while running2:
+    while not stop_threads:
       try:
         gpsd.connect()
         packet = gpsd.get_current()
@@ -113,11 +114,8 @@ def continuously_run(gps_collector, kml_generator):
           time.sleep(5)  # Wait before retrying in case of unexpected errors
 
 
-    save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
-    print("KML file saved.")
-
 def data():
-  while running1:
+  while not stop_threads:
     test.process_csv()
     '''Doesn't work'''
     for obj in test.uids_dict.values():
@@ -125,7 +123,7 @@ def data():
         print(obj)
 
     time.sleep(60)
-  google_earth_csv_maker()
+  # google_earth_csv_maker()
 
 
 
@@ -133,7 +131,6 @@ def data():
 if __name__=="__main__":
   
   #start_rtl_433()
-  #time.sleep(120)
   test = Csv('test.csv') #change argument of Csv after once finished
 
   # Initialize GPS data collector and KML generator
@@ -144,11 +141,11 @@ if __name__=="__main__":
   signal.signal(signal.SIGINT, signal_handler)
  
 
-  thread1 = threading.Thread(target=data)
-  thread2 = threading.Thread(target=continuously_run, args=(gps_collector, kml_generator))
-
+  thread1 = threading.Thread(target=continuously_run, args=(gps_collector, kml_generator))
+  thread2 = threading.Thread(target=data)
   # Start threads
   thread1.start()
+  time.sleep(120)
   thread2.start()
 
   thread1.join()

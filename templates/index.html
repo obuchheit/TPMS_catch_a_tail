@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPMS Catch a Tail</title>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+<header>
+
+</header>
+<body>
+    <div id="control-panel">
+        <h2>Control Panel</h2>
+        <div id="control-buttons-container">
+            <div id="start-button" class="button-container">
+                <button class="control-button" id="start">Start</button>
+            </div>
+            <div id="stop-button" class="button-container">
+                <button class="control-button" id="stop">Stop</button>
+            </div>
+            <div id="add-ignore" class="button-container">
+                <button class="control-button" id="ignore">Add to Ignore List</button>
+            </div>
+            <div id="add-target" class="button-container">
+                <button class="control-button" id="target">Add to Target List</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="data-panel">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Model</th>
+                    <th>Times</th>
+                    <th>Location</th>
+                    <th>RSSI</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</body>
+</html>
