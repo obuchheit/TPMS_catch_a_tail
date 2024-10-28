@@ -3,6 +3,7 @@ TODO
 -Finish ini file.
 -Potentially turn uids_dict into a list
 -Make it to where it can run without gpsd 
+-Potentially use gunicorn
 
 track_name
 

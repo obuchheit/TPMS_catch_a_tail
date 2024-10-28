@@ -7,6 +7,7 @@ import threading
 from track import GPSDataCollector, GPSKMLGenerator, save_kml
 import gpsd
 from flask import Flask, render_template, jsonify
+import sys
 
 app = Flask(__name__)
 
@@ -20,6 +21,7 @@ def signal_handler(sig, frame):
 
   google_earth_csv_maker()
   save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
+  sys.exit(0)
 
 class Csv:
   def __init__(self, file):
@@ -158,7 +160,7 @@ if __name__=="__main__":
   thread1.start()
   thread2.start()
 
-  app.run(host='0.0.0.0', port=8004, debug=True, threaded=True)
+  app.run(host='0.0.0.0', port=8088, debug=True, threaded=True)
 
   thread1.join()
   thread2.join()
