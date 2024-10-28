@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TPMS Catch a Tail</title>
     <link rel="stylesheet" href="../static/main.css">
+    <script src="{{url_for('static', filename='../static/main.js')}}"></script>
 </head>
 <header>
     <div id="title">TPMS Catch a Tail</div>
@@ -18,7 +19,7 @@
         <h2>Control Panel</h2>
         <div id="control-buttons-container">
             <div id="start-button" class="button-container">
-                <button class="control-button" id="start">Start</button>
+                <button class="control-button" id="start" onclick="populateTable()">Start</button>
             </div>
             <div id="stop-button" class="button-container">
                 <button class="control-button" id="stop">Stop</button>
@@ -33,18 +34,17 @@
     </div>
 
     <div id="data-panel">
-        <table>
+        <table id="data-table">
             <thead>
                 <tr>
                     <th class="data-table-header">ID</th>
                     <th class="data-table-header">Model</th>
-                    <th class="data-table-header">Times</th>
+                    <!-- <th class="data-table-header">Times</th>
                     <th class="data-table-header">Location</th>
-                    <th class="data-table-header">RSSI</th>
+                    <th class="data-table-header">RSSI</th> -->
                 </tr>
             </thead>
             <tbody>
-                <tr></tr>
             </tbody>
         </table>
     </div>

@@ -1,11 +1,9 @@
 TODO
--Try else block for no gps lock
--Also might have to switch from lat, lon to lon, lat, pending on google earths needs.
--Terminal or gui?
--Need to figure out how to make an output file for displaying data on a map.
 -Can use python debugger to keep track of local and global variables.
 -Finish ini file.
--Create kargs maybe?
+-Potentially turn uids_dict into a list
+-Make it to where it can run without gpsd 
+
 track_name
 
 Dependancies:
@@ -14,9 +12,9 @@ Dependancies:
     -simplekml
 
 
-systemctl stop gpsd.socket gpsd.service
-systemctl disable gpsd.socket gpsd.service
-reboot
+sudo killall gpsd
+sudo gpsd /dev/ttyUSB0
+
 
 
 2024-10-03 21:27:48,,,38.443065000,-91.022605000,ASK,315.006,,,-0.114,13.421,-13.535,Ford-CarRemote,,154870,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
