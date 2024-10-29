@@ -8,6 +8,7 @@ from track import GPSDataCollector, GPSKMLGenerator, save_kml
 import gpsd
 from flask import Flask, render_template, jsonify
 import sys
+import eel
 
 app = Flask(__name__)
 
