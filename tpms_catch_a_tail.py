@@ -6,11 +6,8 @@ import signal
 import threading
 from track import GPSDataCollector, GPSKMLGenerator, save_kml
 import gpsd
-from flask import Flask, render_template, jsonify
 import sys
-import eel
 
-app = Flask(__name__)
 
 
 
@@ -73,14 +70,7 @@ def google_earth_csv_maker():
             'rssi': instance.rssi[i]
           })
 
-@app.route('/')
-def setup():
-  return render_template('setup.html')
 
-@app.route('/home')
-def home():
-  #return jsonify({obj: {'id': item.id, 'model': item.model} for obj, item in test.uids_dict.items()})
-  return render_template('index.html', data=test.uids_dict)
 '''Intializes rtl_433'''
 def start_rtl_433():
   #os.system('rtl_433 -f 315M -F csv:cat.csv -M level -M time -K gpsd,lat,lon')
@@ -161,7 +151,6 @@ if __name__=="__main__":
   thread1.start()
   thread2.start()
 
-  app.run(host='0.0.0.0', port=8088, debug=True, threaded=True)
 
   thread1.join()
   thread2.join()
