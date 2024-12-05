@@ -9,8 +9,6 @@ import gpsd
 import sys
 
 
-
-
 stop_threads = False
 
 def signal_handler(sig, frame):
@@ -26,6 +24,7 @@ class Csv:
     self.file = file
     self.start_index = 0
     self.uids_dict = {}
+    self.uids_lst = []
 
   def process_csv(self):
     with open(self.file) as csv_file:
@@ -128,7 +127,6 @@ def data():
 
     time.sleep(60)
   # google_earth_csv_maker()
-
 
 
 
