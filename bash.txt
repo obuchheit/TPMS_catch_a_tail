@@ -5,12 +5,7 @@ TODO
 -Make it to where it can run without gpsd 
 -Potentially use gunicorn
 
-track_name
 
-Dependancies:
-    -pip
-    -gps3
-    -simplekml
 
 
 sudo killall gpsd
