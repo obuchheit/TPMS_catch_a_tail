@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 import threading
 from flask_cors import CORS
-from tpms_cat import start_main_function, stop_main_function
 
 app = Flask(__name__)
 socketio = SocketIO(app)
