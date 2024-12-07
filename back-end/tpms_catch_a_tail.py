@@ -26,7 +26,6 @@ if not csv_name:
 if not kml_name:
   kml_name = formatted_time
 
-
 stop_threads = False
 thread1 = thread2 = None
 
@@ -135,38 +134,34 @@ def gps_route_run(gps_collector, kml_generator):
           print(f"An unexpected error occurred: {e}")
           time.sleep(5)  # Wait before retrying in case of unexpected errors
 
-
+##
+'''Might need to move to main.py'''
 def data():
   while not stop_threads:
     test.process_csv()
-    '''Doesn't work'''
+
     for obj in test.uids_dict.values():
       if obj.difference_time > 5:
         print(obj)
 
     time.sleep(60)
-  # google_earth_csv_maker()
+
+##
 
 
+test = Csv('test.csv') 
+gps_collector = GPSDataCollector()
+kml_generator = GPSKMLGenerator(f"{kml_name}.kml")
 
-if __name__=="__main__":
-  test = Csv('test.csv') #change argument of Csv after once finished
-
+def main():
   if gps:
-
-  
-  #start_rtl_433()
-
-    # Initialize GPS data collector and KML generator
-    gps_collector = GPSDataCollector()
-    kml_generator = GPSKMLGenerator(f"{kml_name}.kml")
-
     '''Adds listeners to execute specific code when the program is terminated.'''
     signal.signal(signal.SIGINT, signal_handler)
   
 
     thread1 = threading.Thread(target=gps_route_run, args=(gps_collector, kml_generator))
     thread2 = threading.Thread(target=data)
+
     # Start threads
     thread1.start()
     thread2.start()
@@ -174,21 +169,13 @@ if __name__=="__main__":
 
     thread1.join()
     thread2.join()
-  else: 
+  else:
+    '''If no gps module then only do data.''' 
     data()
 
-def start_main_function():
-    global stop_threads, thread1, thread2
-    stop_threads = False
-    thread1 = threading.Thread(target=gps_route_run, args=(gps_collector, kml_generator))
-    thread2 = threading.Thread(target=data)
-    thread1.start()
-    thread2.start()
+"""TODO: Add stop main for threads."""
+def stop_main():
+  pass
 
-def stop_main_function():
-    global stop_threads
-    stop_threads = True
-    if thread1:
-        thread1.join()
-    if thread2:
-        thread2.join()
+
+main()
