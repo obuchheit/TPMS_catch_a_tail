@@ -28,6 +28,7 @@ if not kml_name:
 
 
 stop_threads = False
+thread1 = thread2 = None
 
 def signal_handler(sig, frame):
   global stop_threads
@@ -97,7 +98,7 @@ def start_rtl_433():
 
 
 
-def continuously_run(gps_collector, kml_generator):
+def gps_route_run(gps_collector, kml_generator):
     """Continuously collect GPS data."""
     retries = 12
     while not stop_threads:
@@ -164,7 +165,7 @@ if __name__=="__main__":
     signal.signal(signal.SIGINT, signal_handler)
   
 
-    thread1 = threading.Thread(target=continuously_run, args=(gps_collector, kml_generator))
+    thread1 = threading.Thread(target=gps_route_run, args=(gps_collector, kml_generator))
     thread2 = threading.Thread(target=data)
     # Start threads
     thread1.start()
@@ -175,3 +176,19 @@ if __name__=="__main__":
     thread2.join()
   else: 
     data()
+
+def start_main_function():
+    global stop_threads, thread1, thread2
+    stop_threads = False
+    thread1 = threading.Thread(target=gps_route_run, args=(gps_collector, kml_generator))
+    thread2 = threading.Thread(target=data)
+    thread1.start()
+    thread2.start()
+
+def stop_main_function():
+    global stop_threads
+    stop_threads = True
+    if thread1:
+        thread1.join()
+    if thread2:
+        thread2.join()

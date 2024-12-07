@@ -1,27 +1,33 @@
-import { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import axios from 'axios';
 
-const socket = io('http://127.0.0.1:5000');
+const socket = io('http://localhost:5000'); // Adjust URL as needed
 
+const RunPage = () => {
+  const [data, setData] = useState(null);
 
-function RunPage(){
-    const [message, setMessage] = useState('');
+  const start = () => {
+    axios.post('/start').then((response) => alert(response.data.message));
+  };
 
-    useEffect(() => {
-        socket.on('message', (data) => {
-          setMessage(data.data)
-        });
-    
-        return () => {
-          socket.disconnect();
-        };
-      }, []);
+  const stop = () => {
+    axios.post('/stop').then((response) => alert(response.data.message));
+  };
 
-    return(
-        <>
-            <h1>TPMS Catch A Tail</h1>
-        </>
-    );
+  useEffect(() => {
+    socket.on('data_response', (newData) => setData(newData));
+    return () => socket.off('data_response');
+  }, []);
+
+  return (
+    <div>
+      <h1>Run Page</h1>
+      <button onClick={start}>Start</button>
+      <button onClick={stop}>Stop</button>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
 };
 
-export default RunPage
+export default RunPage;
