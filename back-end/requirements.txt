@@ -1,0 +1,6 @@
+bottle==0.13.2
+gpsd-py3==0.3.0
+proxy_tools==0.1.0
+pywebview==5.3.2
+typing_extensions==4.12.2
+websockets==14.1
