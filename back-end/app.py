@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from flask_socketio import SocketIO
 import threading
 import config
 import tpms_catch_a_tail
 
 app = Flask(__name__)
-socketio = SocketIO(app)
+CORS(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 thread1 = thread2 = None
 
@@ -36,12 +38,18 @@ def stop_main():
 def handle_connect():
     def stream_data():
         while not tpms_catch_a_tail.stop_threads:
+            if tpms_catch_a_tail.test is None:
+                print("Test instance is not initialized.")
+                socketio.sleep(1)
+                continue
+
             for obj in tpms_catch_a_tail.test.uids_dict.values():
                 if obj.difference_time > 5:
                     socketio.emit('data', {'id': obj.id, 'rssi': obj.rssi})
             socketio.sleep(60)
 
     socketio.start_background_task(stream_data)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

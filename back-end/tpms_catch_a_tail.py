@@ -20,7 +20,7 @@ stop_threads = False
 # Shared resources
 gps_collector = GPSDataCollector()
 kml_generator = GPSKMLGenerator(f"{kml_name}.kml")
-test = None  # Will be initialized later
+
 
 # Thread references
 thread1 = thread2 = None
@@ -102,11 +102,15 @@ def gps_route_run():
             print(f"Unexpected error: {e}")
             time.sleep(5)
 
-
 def data(socketio=None):
     """Processes CSV data and optionally streams via WebSocket."""
-    global stop_threads
+    global stop_threads, test
     while not stop_threads:
+        if test is None:
+            print("Test instance is not initialized.")
+            time.sleep(1)
+            continue
+
         test.process_csv()
         for obj in test.uids_dict.values():
             if obj.difference_time > 5:
@@ -116,21 +120,31 @@ def data(socketio=None):
         time.sleep(60)
 
 
+
+test = Csv('test.csv')
+
+
 def start_main():
     """Starts main threads."""
     global thread1, thread2, stop_threads, test
     stop_threads = False
-    test = Csv('test.csv')
+    if test is None:
+        test = Csv('test.csv')
 
     if gps:
         signal.signal(signal.SIGINT, signal_handler)
-        thread1 = threading.Thread(target=gps_route_run)
+
+        def gps_thread_runner():
+            gps_route_run(gps_collector, kml_generator)  # Pass the required arguments here
+
+        thread1 = threading.Thread(target=gps_thread_runner)
         thread2 = threading.Thread(target=data)
         thread1.start()
         thread2.start()
     else:
         thread2 = threading.Thread(target=data)
         thread2.start()
+
 
 
 def stop_main():
