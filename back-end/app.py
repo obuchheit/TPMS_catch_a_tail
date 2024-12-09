@@ -31,8 +31,8 @@ def start_main():
 
 @app.route('/run/stop', methods=['POST'])
 def stop_main():
-    tpms_catch_a_tail.stop_threads = True
-    return jsonify({"message": "Main stopped"}), 200
+    tpms_catch_a_tail.stop_main()
+    return jsonify({"message": "Main stopped and files generated"}), 200
 
 @socketio.on('connect')
 def handle_connect():
@@ -45,8 +45,11 @@ def handle_connect():
 
             for obj in tpms_catch_a_tail.test.uids_dict.values():
                 if obj.difference_time > 5:
-                    socketio.emit('data', {'id': obj.id, 'rssi': obj.rssi})
+                    socketio.emit('data', {'id': obj.id, 'model': obj.model})
             socketio.sleep(60)
+
+        # Notify clients that streaming has stopped
+        socketio.emit('data', {'message': 'Data stream has stopped.'})
 
     socketio.start_background_task(stream_data)
 
