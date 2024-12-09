@@ -69,7 +69,7 @@ def google_earth_csv_maker():
                 })
 
 
-def gps_route_run():
+def gps_route_run(gps_collector, kml_generator):
     """Continuously collect GPS data."""
     global stop_threads
     retries = 12
@@ -89,7 +89,7 @@ def gps_route_run():
             else:
                 print("GPS is running but has no fix.")
                 time.sleep(3)
-        except gpsd.GPSDException as e:
+        except Exception as e:
             print(f"GPS daemon error: {e}")
             if retries > 0:
                 retries -= 1
@@ -116,9 +116,12 @@ def data(socketio=None):
             if obj.difference_time > 5:
                 print(obj)
                 if socketio:
-                    socketio.emit('data', {'id': obj.id, 'rssi': obj.rssi})
+                    socketio.emit('data', {'id': obj.id, 'model': obj.model})
         time.sleep(60)
 
+    # Clean up when stopping
+    if socketio:
+        socketio.emit('data', {'message': 'Stopping data emission.'})
 
 
 test = Csv('test.csv')
@@ -148,13 +151,32 @@ def start_main():
 
 
 def stop_main():
-    """Stops all running threads."""
+    """Stops all running threads and generates output files."""
     global stop_threads
     stop_threads = True
+
     if thread1 and thread1.is_alive():
         thread1.join()
     if thread2 and thread2.is_alive():
         thread2.join()
+
+    print("Threads stopped. Generating output files...")
+
+    # Generate the CSV file
+    try:
+        google_earth_csv_maker()
+        print("CSV file generated successfully.")
+    except Exception as e:
+        print(f"Error generating CSV file: {e}")
+
+    # Generate the KML file
+    try:
+        save_kml(kml_generator.kml, kml_generator.kml_file_name, kml_generator.coordinates)
+        print("KML file generated successfully.")
+    except Exception as e:
+        print(f"Error generating KML file: {e}")
+
+    print("Main function stopped. All tasks completed.")
 
 
 def signal_handler(sig, frame):

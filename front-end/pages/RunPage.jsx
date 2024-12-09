@@ -4,16 +4,27 @@ import { io } from 'socket.io-client';
 
 const RunPage = () => {
     const [data, setData] = useState([]);
+    const [socket, setSocket] = useState(null);
 
-    const socket = io("http://localhost:5000", {
-        transports: ["websocket", "polling"], // Ensure compatibility with multiple transports
-      });
-      
+
     useEffect(() => {
-        socket.on('data', (newData) => {
-            setData((prev) => [...prev, newData]);
+        // Initialize the WebSocket connection
+        const newSocket = io("http://localhost:5000", {
+            transports: ["websocket"],
         });
-        return () => socket.disconnect();
+
+        newSocket.on("data", (newData) => {
+            setData((prevData) => [...prevData, newData]);
+        });
+
+        setSocket(newSocket);
+
+        return () => {
+            // Clean up and disconnect the WebSocket
+            if (newSocket) {
+                newSocket.disconnect();
+            }
+        };
     }, []);
 
     const handleStart = async () => {
@@ -34,7 +45,7 @@ const RunPage = () => {
             <h2>Data:</h2>
             <ul>
                 {data.map((item, index) => (
-                    <li key={index}>ID: {item.id}, RSSI: {item.rssi}</li>
+                    <li key={index}>ID: {item.id}, Model: {item.model}</li>
                 ))}
             </ul>
         </div>
